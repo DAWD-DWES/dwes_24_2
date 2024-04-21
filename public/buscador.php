@@ -10,6 +10,8 @@ use App\Modelo\Partida;
 
 session_start();
 
+define("NUM_PARTIDAS_PAGINA", 10);
+
 // Inicializa el acceso a las variables de entorno
 
 $dotenv = Dotenv::createImmutable(__DIR__ . "/../");
@@ -38,7 +40,8 @@ if (isset($_SESSION['usuario'])) {
         $fechaBusqueda = filter_input(INPUT_POST, 'fechabusqueda');
         $rangoNumLetras = filter_input(INPUT_POST, 'rangonumletras');
         $maxErrores = filter_input(INPUT_POST, 'maxerrores');
-        $partidasGanadas = filter_input(INPUT_POST, 'partidasganadas');
+        $partidasGanadasInput = filter_input(INPUT_POST, 'partidasganadas');
+        $partidasGanadas = ($partidasGanadasInput === 'on');
         $errorRangoLetras = !(preg_match('/^(\d+)\-(\d+)$/', $rangoNumLetras, $coincidencias));
         if (!$errorRangoLetras) {
             $minNumLetras = $coincidencias[1];
@@ -47,10 +50,13 @@ if (isset($_SESSION['usuario'])) {
         $partidaDAO = new PartidaDAO($bd);
         $partidas = $partidaDAO->obtenerPorCriteriosBusqueda($usuario->getId(),
                 $fechaBusqueda, $minNumLetras, $maxNumLetras, $maxErrores, $partidasGanadas);
-        echo "asda";
+        $_SESSION['partidasEncontradas'] = $partidas;
+        $partidasAMostrar = array_slice($partidas, 0, NUM_PARTIDAS_PAGINA);
+        $numPartidas = count($partidas);
+        $numPartidasPagina = NUM_PARTIDAS_PAGINA;
+        echo $blade->run("partidasencontradas", compact('usuario', 'partidasAMostrar', 'numPartidas', 'numPartidasPagina'));
+    } else {
+        echo $blade->run("formbusqueda", compact('usuario'));
     }
 }
-
-
-echo $blade->run("formbusqueda", compact('usuario'));
 

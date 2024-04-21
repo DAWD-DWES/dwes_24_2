@@ -44,8 +44,8 @@ class PartidaDAO {
             WHERE idUsuario = :idUsuario
             AND numErrores <= :maxErrores
             AND LENGTH(palabraSecreta) BETWEEN :minNumLetras AND :maxNumLetras 
-            AND inicio >= :fechaBusqueda
-            AND " . (($partidasGanadas) ? "palabraDescubierta NOT REGEXP '[_]'" : '');
+            AND inicio >= :fechaBusqueda"
+            . (($partidasGanadas) ? " AND palabraDescubierta = palabraSecreta" : "");
 
         $stmt = $this->bd->prepare($sql);
         $stmt->execute(["idUsuario" => $idUsuario, "fechaBusqueda" => $fechaBusqueda, "minNumLetras" => $minNumLetras, "maxNumLetras" => $maxNumLetras, "maxErrores" => $maxErrores]);
