@@ -32,7 +32,7 @@ $imgsHangman = ['Hangman-0.png', 'Hangman-1.png', 'Hangman-2.png', 'Hangman-3.pn
             <h1 id="palabra">{{ $partida->esFin() ? implode(" ", str_split($partida->getPalabraSecreta())) : implode(" ", str_split($partida->getPalabraDescubierta())) }}</h1>
             <form action="juego.php" method="POST">
                 <div class="input-group mb-3">
-                    <input type="text" id="letra" name="letra" autofocus class="form-control me-5 {{ (isset($error)) ? (($error) ? 'is-invalid' : 'is-valid') : '' }}" placeholder="Introduce una letra" {{ $partida->esFin() ? 'disabled' : '' }}>
+                    <input type="text" id="letra" name="letra" autofocus class="form-control me-5 {{ ($partida->esFin()) ? "" : ((isset($error)) ? (($error) ? 'is-invalid' : 'is-valid') : '') }}" placeholder="Introduce una letra" {{ $partida->esFin() ? 'disabled' : '' }}>
                     <input class="btn btn-outline-secondary" type="submit" id="botonenviarjugada" name="botonenviarjugada" value="Enviar Jugada" {{ $partida->esFin() ? 'disabled' : '' }}>
                     <input class="btn btn-outline-secondary ms-2" id="botonresolverpartida" name="botonresolverpartida" value="Resolver" {{ $partida->esFin() ? 'disabled' : '' }}>
                     @if(isset($error) && $error)
