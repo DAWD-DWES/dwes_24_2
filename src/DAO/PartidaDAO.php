@@ -36,7 +36,7 @@ class PartidaDAO {
         
     }
 
-    public function obtenerPorCriteriosBusqueda(int $idUsuario, string $fechaBusqueda, int $minNumLetras, int $maxNumLetras, int $maxErrores, bool $partidasGanadas): array {
+    public function obtenerPorCriteriosBusqueda(int $idUsuario, string $fechaBusqueda, int $minNumLetras, int $maxNumLetras, int $maxErrores, bool $ganadas): array {
         // La consulta asume que 'ganadas' implica 'palabraDescubierta' compuesta solo de guiones
         $sql = "
             SELECT * 
@@ -45,7 +45,7 @@ class PartidaDAO {
             AND numErrores <= :maxErrores
             AND LENGTH(palabraSecreta) BETWEEN :minNumLetras AND :maxNumLetras 
             AND inicio >= :fechaBusqueda"
-            . (($partidasGanadas) ? " AND palabraDescubierta = palabraSecreta" : "");
+            . (($ganadas) ? " AND palabraDescubierta = palabraSecreta" : "");
 
         $stmt = $this->bd->prepare($sql);
         $stmt->execute(["idUsuario" => $idUsuario, "fechaBusqueda" => $fechaBusqueda, "minNumLetras" => $minNumLetras, "maxNumLetras" => $maxNumLetras, "maxErrores" => $maxErrores]);

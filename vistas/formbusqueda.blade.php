@@ -10,21 +10,38 @@
 @endsection
 {{-- Sección muestra el formulario de búsqueda de una partida --}}
 @section('content')
+@php
+define ("ERROR_FECHABUSQUEDA", 'Fecha inválida');
+define ("ERROR_NUMRANGOLETRAS", 'Rango inválido');
+define ("ERROR_MAXERRORES", 'Número de errores inválido');
+@endphp
 <form action="buscador.php" method="post" novalidate class="container mt-3">
     <h2 class="mb-3">Buscar Partidas</h2>
     <div class="mb-4">
         <label for="fechabusqueda" class="form-label">Fecha a partir de la que buscar:</label>
-        <input type="text" class="form-control" id="fechabusqueda" name="fechabusqueda" placeholder="Ejemplo: 10/04/2024">
+        <input type="text" class= "{{ "form-control " . (isset($errorFechaBusqueda) ?  ($errorFechaBusqueda ? "is-invalid" : "is-valid") : "") }}" 
+               id="fechabusqueda" name="fechabusqueda" placeholder="Ejemplo: 10/04/2024" value="{{ ($fechaBusqueda ?? '') }}">
+        <div class="invalid-feedback">
+            <p>{{ ERROR_FECHABUSQUEDA }}</p>
+        </div>
     </div>
     <div class="mb-4">
         <label for="rangoletras" class="form-label">Rango en el número de letras de la palabra secreta:</label>
-        <input type="text" class="form-control" id="rangonumletras" name="rangonumletras" placeholder="Ejemplo: 5-10">
+        <input type="text" class= "{{ "form-control " . (isset($errorRangoNumLetras) ?  ($errorRangoNumLetras ? "is-invalid" : "is-valid") : "") }}" 
+               id="rangonumletras" name="rangonumletras" placeholder="Ejemplo: 5-10" value="{{ ($rangoNumLetras ?? '') }}">
+        <div class="invalid-feedback">
+            <p>{{ ERROR_NUMRANGOLETRAS }}</p>
+        </div>
     </div>
     <div class="mb-4">
-        <label for="numerofallos" class="form-label">Número máximo de fallos:</label>
-        <input type="text" class="form-control" id="maxerrores" name="maxerrores" placeholder="Ejemplo: 3">
+        <label for="maxerrores" class="form-label">Número máximo de errores:</label>
+        <input type="text" class= "{{ "form-control " . (isset($errorMaxErrores) ?  ($errorMaxErrores ? "is-invalid" : "is-valid") : "") }}" 
+               id="maxerrores" name="maxerrores" placeholder="Ejemplo: 3" value="{{ ($numMaxErrores ?? '') }}">
+        <div class="invalid-feedback">
+            <p>{{ ERROR_MAXERRORES }}</p>
+        </div>
     </div>
-     <div class="mb-4 form-check">
+    <div class="mb-4 form-check">
         <input type="checkbox" class="form-check-input" id="partidasganadas" name="partidasganadas">
         <label class="form-check-label" for="partidasganadas">Partidas Ganadas</label>
     </div>
