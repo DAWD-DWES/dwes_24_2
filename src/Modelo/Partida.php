@@ -10,7 +10,7 @@ use App\Almacen\IAlmacenPalabras;
 class Partida {
 
     /**
-     * @var int $numErrores Número de errores cometidos en la partida
+     * int $numErrores Número de errores cometidos en la partida
      */
     private int $numErrores = 0;
 
@@ -30,7 +30,7 @@ class Partida {
     private string $letras = "";
 
     /**
-     * @var $manNumErrores Número de errores permitido en la partida
+     * @var $maxNumErrores Número de errores permitido en la partida
      */
     private int $maxNumErrores;
 
