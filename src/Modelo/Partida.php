@@ -3,6 +3,7 @@
 namespace App\Modelo;
 
 use App\Almacen\IAlmacenPalabras;
+use DateTime;
 
 /**
  * Clase que representa una partida del juego del ahorcado
@@ -10,29 +11,51 @@ use App\Almacen\IAlmacenPalabras;
 class Partida {
 
     /**
-     * int $numErrores Número de errores cometidos en la partida
+     * @var int $id Identificador de la partida
+     */
+    private ?int $id = null;
+
+    /**
+     * @var int $numErrores Número de errores cometidos en la partida
      */
     private int $numErrores = 0;
 
     /**
-     * @var $palabraSecreta Palabra secreta usada en la partida
+     * @var string $palabraSecreta Palabra secreta usada en la partida
      */
     private string $palabraSecreta;
 
     /**
-     * @var $palabraDescubierta Estado de la palabra según va siendo descubierta. Por ejemplo c_c_e
+     * @var string $palabraDescubierta Estado de la palabra según va siendo descubierta. Por ejemplo c_c_e
      */
     private string $palabraDescubierta;
 
     /**
-     * @var $letras Lista de jugadas que ha realizado el jugador en la partida
+     * @var string $letras Lista de jugadas que ha realizado el jugador en la partida
      */
     private string $letras = "";
 
     /**
-     * @var $maxNumErrores Número de errores permitido en la partida
+     * @var int $manNumErrores Número de errores permitido en la partida
      */
     private int $maxNumErrores;
+
+    /**
+     * 
+     * @var $inicio Fecha y Hora del inicio de la partida
+     */
+    private string $inicio;
+
+    /**
+     * 
+     * @var $fin Fecha y Hora del fin de la partida
+     */
+    private ?string $fin = null;
+
+    /**
+     * @var int $idUsuario Identificador del usuario
+     */
+    private ?int $idUsuario = null;
 
     /**
      * Constructor de la clase Hangman
@@ -42,11 +65,34 @@ class Partida {
      * 
      * @returns Hangman
      */
-    public function __construct(IAlmacenPalabras $almacen, int $maxNumErrores) {
-        $this->setPalabraSecreta(strtoupper($almacen->obtenerPalabraAleatoria()));
-        // Inicializa la estado de la palabra descubierta a una secuencia de guiones, uno por letra de la palabra oculta
-        $this->setPalabraDescubierta(preg_replace('/\w+?/', '_', $this->getPalabraSecreta()));
-        $this->maxNumErrores = $maxNumErrores;
+    public function __construct(IAlmacenPalabras $almacen = null, int $maxNumErrores = null) {
+        if (func_num_args() > 0) {
+            $this->setPalabraSecreta(strtoupper($almacen->obtenerPalabraAleatoria()));
+            // Inicializa la estado de la palabra descubierta a una secuencia de guiones, uno por letra de la palabra oculta
+            $this->setPalabraDescubierta(preg_replace('/\w+?/', '_', $this->getPalabraSecreta()));
+            $this->maxNumErrores = $maxNumErrores;
+            $this->setInicio((new DateTime('now'))->format('d/m/Y'));
+        }
+    }
+
+    /**
+     * Recupera el identificador de la partida
+     * 
+     * @returns id de la partida
+     */
+    public function getId(): ?int {
+        return $this->id;
+    }
+
+    /**
+     * Establece el id de la partida
+     * 
+     * @param int $id ifd de la partida
+     * 
+     * @returns void
+     */
+    public function setId(int $id): void {
+        $this->id = $id;
     }
 
     /**
@@ -125,7 +171,7 @@ class Partida {
      * 
      * @returns void
      */
-    public function setMaxNumErrores($maxNumErrores): void {
+    public function setMaxNumErrores(int $maxNumErrores): void {
         $this->maxNumErrores = $maxNumErrores;
     }
 
@@ -145,8 +191,73 @@ class Partida {
      * 
      * @returns void
      */
-    public function setNumErrores($numErrores): void {
+    public function setNumErrores(int $numErrores): void {
         $this->numErrores = $numErrores;
+    }
+
+    /**
+     * Recupera la fecha y hora del inicio de la partida
+     * 
+     * @param string $fin Hora y fecha del inicio de la partida
+     * 
+     * 
+     * @returns string Hora y fecha del inicio de la partida
+     */
+    public function getInicio(): string {
+        return $this->inicio;
+    }
+
+    /**
+     * Establece la fecha y hora del inicio de la partida
+     * 
+     * @param string $inicio Hora y fecha del inicio de la partida
+     * 
+     * 
+     * @returns void
+     */
+    public function setInicio(string $inicio): void {
+        $this->inicio = $inicio;
+    }
+
+    /**
+     * Recupera la fecha y hora del fin de la partida
+     * 
+     * @returns string Hora y fecha del inicio de la partida
+     */
+    public function getFin(): string {
+        return $this->fin;
+    }
+
+    /**
+     * Establece la fecha y hora del fin de la partida
+     * 
+     * @param string $fin Hora y fecha del fin de la partida
+     * 
+     * 
+     * @returns void
+     */
+    public function setFin(string $fin): void {
+        $this->fin = $fin;
+    }
+
+    /**
+     * Recupera el identificador del usuario de la partida
+     * 
+     * @returns id del usuario de la partida
+     */
+    public function getIdUsuario(): ?int {
+        return $this->idUsuario;
+    }
+
+    /**
+     * Establece el id del usuario de la partida
+     * 
+     * @param int $idUsuario id del usuario
+     * 
+     * @returns void
+     */
+    public function setIdUsuario(int $idUsuario): void {
+        $this->idUsuario = $idUsuario;
     }
 
     /**
@@ -200,5 +311,4 @@ class Partida {
     public function esFin(): bool {
         return ($this->esPalabraDescubierta() || ($this->getNumErrores() === $this->getMaxNumErrores()));
     }
-
 }
