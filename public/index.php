@@ -8,14 +8,14 @@
  *   Si se solicita cerrar la sesión
  *     Destruyo la sesión
  *     Invoco la vista del formulario de login
- *    Sino redirección a juego para jugar una partida
- *  Sino 
+ *    Si no redirección a juego para jugar una partida
+ *  Si no 
  *   Si se pide procesar los datos del formulario
  *       Lee los valores del formulario
  *       Si los credenciales son correctos
  *       Redirijo al cliente al script de juego con una nueva partida
- *        Sino Invoco la vista del formulario de login con el flag de error
- *   Sino (En cualquier otro caso)
+ *        Si no Invoco la vista del formulario de login con el flag de error
+ *   Si no (En cualquier otro caso)
  *      Invoco la vista del formulario de login
  */
 require "../vendor/autoload.php";
@@ -70,7 +70,7 @@ if (isset($_SESSION['usuario'])) {
         die;
     }
 
-    // Sino 
+    // Si no 
 } else {
     if (filter_has_var(INPUT_POST, 'botonproclogin')) {
         // Lee los valores del formulario

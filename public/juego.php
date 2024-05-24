@@ -10,11 +10,11 @@
  *     Si no hay error en la letra introducida
  *       Solicito a la partida que compruebe la letra
  *     Invoco la vista de juego con los datos obtenidos
- *   Sino si se solicita una nueva partida
+ *   Si no si se solicita una nueva partida
  *     Se crea una nueva partida
  *     Invoco la vista del juego para empezar a jugar
- *   Sino Invoco la vista de juego
- *  Sino (En cualquier otro caso)
+ *   Si no Invoco la vista de juego
+ *  Si no (En cualquier otro caso)
  *      Invoco la vista del formulario de login
  */
 require "../vendor/autoload.php";
@@ -53,7 +53,7 @@ if (isset($_SESSION['usuario'])) {
         }
         // Sigo jugando
         echo $blade->run("juego", compact('usuario', 'partida', 'error'));
-// Sino si se solicita una nueva partida
+// Si no si se solicita una nueva partida
     } elseif (filter_has_var(INPUT_GET, 'botonnuevapartida')) { // Se arranca una nueva partida
         $rutaFichero = $_ENV['RUTA_ALMACEN_PALABRAS'];
         $almacenPalabras = new AlmacenPalabrasFichero($rutaFichero);
