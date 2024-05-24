@@ -50,13 +50,13 @@ class PartidaDAO {
         $stmt = $this->bd->prepare($sql);
         $stmt->execute(["idUsuario" => $idUsuario, "fechaBusqueda" => $fechaBusqueda, "minNumLetras" => $minNumLetras, "maxNumLetras" => $maxNumLetras, "maxErrores" => $maxErrores]);
         $partidas = $stmt->fetchAll(PDO::FETCH_CLASS, Partida::class);
-        array_walk($partidas, function ($partida) {
+     /*   array_walk($partidas, function ($partida) {
             $this->inicializarPostPDO($partida);
-        });
+        }); */
         return $partidas;
     }
 
-    private function inicializarPostPDO(Partida $partida): Partida {
+  /*  private function inicializarPostPDO(Partida $partida): Partida {
         if (is_string($partida->getInicio())) {
             $partida->setInicio(new DateTime($partida->getInicio()));
         }
@@ -64,5 +64,5 @@ class PartidaDAO {
             $partida->setfin(new DateTime($partida->getfin()));
         }
         return $partida;
-    }
+    } */
 }

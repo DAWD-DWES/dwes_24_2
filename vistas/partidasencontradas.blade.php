@@ -30,8 +30,8 @@
                         <td>{{ $partida->getPalabraSecreta() }}</td>
                         <td>{{ $partida->getLetras() }}</td>
                         <td>{{ $partida->getNumErrores() }}</td>
-                        <td>{{ $partida->getInicio()->format('d/m/Y') }}</td>
-                        <td>{{ $partida->getFin()->format('d/m/Y') }}</td>
+                        <td>{{ $partida->getInicio() }}</td>
+                        <td>{{ $partida->getFin() }}</td>
                         <td>{{ ($partida->getPalabraDescubierta() ===  $partida->getPalabraSecreta()) ? "Si" : "No"}}</td>
                     </tr>
                     @empty

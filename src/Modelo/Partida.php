@@ -44,13 +44,13 @@ class Partida {
      * 
      * @var $inicio Fecha y Hora del inicio de la partida
      */
-    private mixed $inicio;
+    private string $inicio;
 
     /**
      * 
      * @var $fin Fecha y Hora del fin de la partida
      */
-    private mixed $fin = null;
+    private ?string $fin = null;
 
     /**
      * @var int $idUsuario Identificador del usuario
@@ -71,7 +71,7 @@ class Partida {
             // Inicializa la estado de la palabra descubierta a una secuencia de guiones, uno por letra de la palabra oculta
             $this->setPalabraDescubierta(preg_replace('/\w+?/', '_', $this->getPalabraSecreta()));
             $this->maxNumErrores = $maxNumErrores;
-            $this->setInicio(new DateTime('now'));
+            $this->setInicio((new DateTime('now'))->format('d/m/Y'));
         }
     }
 
@@ -198,47 +198,45 @@ class Partida {
     /**
      * Recupera la fecha y hora del inicio de la partida
      * 
-     * @param DateTime $fin Hora y fecha del inicio de la partida
+     * @param string $fin Hora y fecha del inicio de la partida
      * 
      * 
-     * @returns DateTime Hora y fecha del inicio de la partida
+     * @returns string Hora y fecha del inicio de la partida
      */
-    public function getInicio(): mixed {
+    public function getInicio(): string {
         return $this->inicio;
     }
 
     /**
      * Establece la fecha y hora del inicio de la partida
      * 
-     * @param DateTime $inicio Hora y fecha del inicio de la partida
+     * @param string $inicio Hora y fecha del inicio de la partida
      * 
      * 
      * @returns void
      */
-    public function setInicio(DateTime $inicio): void {
+    public function setInicio(string $inicio): void {
         $this->inicio = $inicio;
     }
 
     /**
      * Recupera la fecha y hora del fin de la partida
      * 
-     * 
-     * 
-     * @returns DateTime Hora y fecha del inicio de la partida
+     * @returns string Hora y fecha del inicio de la partida
      */
-    public function getFin(): mixed {
+    public function getFin(): string {
         return $this->fin;
     }
 
     /**
      * Establece la fecha y hora del fin de la partida
      * 
-     * @param DateTime $fin Hora y fecha del fin de la partida
+     * @param string $fin Hora y fecha del fin de la partida
      * 
      * 
      * @returns void
      */
-    public function setFin(DateTime $fin): void {
+    public function setFin(string $fin): void {
         $this->fin = $fin;
     }
 
