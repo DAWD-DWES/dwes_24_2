@@ -78,7 +78,7 @@ if (isset($_SESSION['usuario'])) {
             $maxNumLetras = $coincidencias[2];
             $partidaDAO = new PartidaDAO($bd);
             $partidas = $partidaDAO->obtenerPorCriteriosBusqueda($usuario->getId(),
-                    $fechaBusqueda, $minNumLetras, $maxNumLetras, $maxErrores, $partidasGanadas);
+                    $fechaBusqueda, (int) $minNumLetras, (int) $maxNumLetras, (int) $maxErrores, $partidasGanadas);
             $_SESSION['partidasEncontradas'] = $partidas;
             $partidasAMostrar = array_slice($partidas, 0, NUM_PARTIDAS_PAGINA);
             $numPartidas = count($partidas);
