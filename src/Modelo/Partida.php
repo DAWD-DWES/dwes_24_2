@@ -224,7 +224,7 @@ class Partida {
      * 
      * @returns string Hora y fecha del inicio de la partida
      */
-    public function getFin(): string {
+    public function getFin(): ?string {
         return $this->fin;
     }
 
