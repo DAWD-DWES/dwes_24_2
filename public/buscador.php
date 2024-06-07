@@ -79,21 +79,9 @@ if (isset($_SESSION['usuario'])) {
             $partidaDAO = new PartidaDAO($bd);
             $partidas = $partidaDAO->obtenerPorCriteriosBusqueda($usuario->getId(),
                     $fechaBusqueda, (int) $minNumLetras, (int) $maxNumLetras, (int) $maxErrores, $partidasGanadas);
-            $_SESSION['partidasEncontradas'] = $partidas;
-            $partidasAMostrar = array_slice($partidas, 0, NUM_PARTIDAS_PAGINA);
-            $numPartidas = count($partidas);
-            $numPartidasPagina = NUM_PARTIDAS_PAGINA;
-            echo $blade->run("partidasencontradas", compact('usuario', 'partidasAMostrar', 'numPartidas', 'numPartidasPagina'));
+            echo $blade->run("partidasencontradas", compact('usuario', 'partidas'));
         }
-    } elseif (filter_has_var(INPUT_GET, 'pagina')) {
-        $pagina = filter_input(INPUT_GET, 'pagina', FILTER_UNSAFE_RAW);
-        $partidas = $_SESSION['partidasEncontradas'];
-        $numPartidas = count($partidas);
-        $numPartidasPagina = NUM_PARTIDAS_PAGINA;
-        $partidasAMostrar = array_slice($partidas, NUM_PARTIDAS_PAGINA * ($pagina - 1), NUM_PARTIDAS_PAGINA);
-        echo $blade->run("partidasencontradas", compact('usuario', 'partidasAMostrar', 'numPartidas', 'numPartidasPagina'));
     } elseif (filter_has_var(INPUT_GET, 'volver')) {
-        unset($_SESSION['partidasEncontradas']);
         header("Location:juego.php");
         die;
     } else {

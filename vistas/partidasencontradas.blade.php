@@ -20,18 +20,25 @@
                         <th scope="col">Letras</th>
                         <th scope="col">NumErrores</th>
                         <th scope="col">Fecha Inicio</th>
+                        <th scope="col">Hora Inicio</th>
                         <th scope="col">Fecha Fin</th>
+                        <th scope="col">Hora Fin</th>
                         <th scope="col">Ganada</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($partidasAMostrar as $partida)
-                    <tr>
+                    @forelse($partidas as $partida)
+                    @php
+                    $inicioValores = explode(' ', $partida->getInicio());
+                    $finValores = explode(' ', $partida->getFin());
+                    @endphp                    <tr>
                         <td>{{ $partida->getPalabraSecreta() }}</td>
                         <td>{{ $partida->getLetras() }}</td>
                         <td>{{ $partida->getNumErrores() }}</td>
-                        <td>{{ $partida->getInicio() }}</td>
-                        <td>{{ $partida->getFin() }}</td>
+                        <td>{{ $inicioValores[0] }}</td>
+                        <td>{{ $inicioValores[1] }}</td>
+                        <td>{{ $finValores[0] }}</td>
+                        <td>{{ $finValores[1] }}</td>
                         <td>{{ ($partida->getPalabraDescubierta() ===  $partida->getPalabraSecreta()) ? "Si" : "No"}}</td>
                     </tr>
                     @empty
@@ -41,21 +48,6 @@
             </table>
         </div>
     </div>
-    @if ($numPartidas > $numPartidasPagina)
-    <div class="row justify-content-center">
-        <div class="col-auto">
-            <nav>
-                <ul class="pagination">
-                    @for ($i = 1; $i < $numPartidas; $i += $numPartidasPagina)
-                    <li class="page-item mx-2">
-                        <a href="buscador.php?pagina={{ intdiv($i, $numPartidasPagina) + 1 }}">{{ intdiv ($i, $numPartidasPagina) + 1}}</a>
-                    </li>
-                    @endfor
-                </ul>
-            </nav>
-        </div>
-    </div>
-    @endif
 </div>    
 @endsection
 
