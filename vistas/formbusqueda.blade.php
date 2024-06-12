@@ -11,7 +11,6 @@
 {{-- Sección muestra el formulario de búsqueda de una partida --}}
 @section('content')
 @php
-define ("ERROR_FECHABUSQUEDA", 'Fecha inválida');
 define ("ERROR_NUMRANGOLETRAS", 'Rango inválido');
 define ("ERROR_MAXERRORES", 'Número de errores inválido');
 @endphp
@@ -28,7 +27,7 @@ define ("ERROR_MAXERRORES", 'Número de errores inválido');
     <div class="mb-4">
         <label for="maxerrores" class="form-label">Número máximo de errores:</label>
         <input type="text" class= "{{ "form-control " . (isset($errorMaxErrores) ?  ($errorMaxErrores ? "is-invalid" : "is-valid") : "") }}" 
-               id="maxerrores" name="maxerrores" placeholder="Ejemplo: 3" value="{{ ($numMaxErrores ?? '') }}">
+               id="maxerrores" name="maxerrores" placeholder="Ejemplo: 3" value="{{ ($maxErrores ?? '') }}">
         <div class="invalid-feedback">
             <p>{{ ERROR_MAXERRORES }}</p>
         </div>
