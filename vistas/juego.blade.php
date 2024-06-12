@@ -10,7 +10,7 @@
     <a class="nav-link" aria-current="page" href="juego.php?botonnuevapartida">Nueva Partida</a>
 </li>
 <li class="nav-item me-5">
-    <a class="nav-link" aria-current="page" href="buscador.php">Buscador Partidas</a>
+    <a class="nav-link" aria-current="page" href="juego.php?petformbusqueda">Buscador Partidas</a>
 </li>
 @endsection
 

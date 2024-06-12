@@ -13,7 +13,7 @@ class Partida {
     /**
      * @var int $id Identificador de la partida
      */
-    private ?int $id = null;
+    private ?int $id;
 
     /**
      * @var int $numErrores Número de errores cometidos en la partida
@@ -50,12 +50,12 @@ class Partida {
      * 
      * @var $fin Fecha y Hora del fin de la partida
      */
-    private ?string $fin = null;
+    private ?string $fin;
 
     /**
      * @var int $idUsuario Identificador del usuario
      */
-    private ?int $idUsuario = null;
+    private ?int $idUsuario;
 
     /**
      * Constructor de la clase Hangman

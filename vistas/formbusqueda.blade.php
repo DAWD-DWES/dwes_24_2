@@ -13,10 +13,6 @@
 <form action="buscador.php" method="post" novalidate class="container mt-3">
     <h2 class="mb-3">Buscar Partidas</h2>
     <div class="mb-4">
-        <label for="fechabusqueda" class="form-label">Fecha a partir de la que buscar:</label>
-        <input type="text" class="form-control" id="fechabusqueda" name="fechabusqueda" placeholder="Ejemplo: 10/04/2024">
-    </div>
-    <div class="mb-4">
         <label for="rangoletras" class="form-label">Rango en el número de letras de la palabra secreta:</label>
         <input type="text" class="form-control" id="rangoletras" name="rangoletras" placeholder="Ejemplo: 5-10">
     </div>

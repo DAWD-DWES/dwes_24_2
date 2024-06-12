@@ -24,7 +24,6 @@ use Dotenv\Dotenv;
 use App\Modelo\Partida;
 use App\Almacen\AlmacenPalabrasFichero;
 
-
 session_start();
 
 define("MAX_NUM_ERRORES", 5);
@@ -35,7 +34,6 @@ $dotenv->load();
 $views = __DIR__ . '/../vistas';
 $cache = __DIR__ . '/../cache';
 $blade = new BladeOne($views, $cache, BladeOne::MODE_DEBUG);
-
 
 // Si el usuario ya está validado
 if (isset($_SESSION['usuario'])) {
@@ -61,6 +59,8 @@ if (isset($_SESSION['usuario'])) {
         $_SESSION['partida'] = $partida;
 // Invoco la vista del juego para empezar a jugar
         echo $blade->run("juego", compact('usuario', 'partida'));
+    } elseif (filter_has_var(INPUT_GET, 'petformbusqueda')) {
+        echo $blade->run("formbusqueda", compact('usuario'));
     } else { //En cualquier otro caso
         $partida = $_SESSION['partida'];
         echo $blade->run("juego", compact('usuario', 'partida'));
