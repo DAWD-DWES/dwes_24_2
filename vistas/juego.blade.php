@@ -34,7 +34,6 @@ $imgsHangman = ['Hangman-0.png', 'Hangman-1.png', 'Hangman-2.png', 'Hangman-3.pn
                 <div class="input-group mb-3">
                     <input type="text" id="letra" name="letra" autofocus class="form-control me-5 {{ ($partida->esFin()) ? "" : ((isset($error)) ? (($error) ? 'is-invalid' : 'is-valid') : '') }}" placeholder="Introduce una letra" {{ $partida->esFin() ? 'disabled' : '' }}>
                     <input class="btn btn-outline-secondary" type="submit" id="botonenviarjugada" name="botonenviarjugada" value="Enviar Jugada" {{ $partida->esFin() ? 'disabled' : '' }}>
-                    <input class="btn btn-outline-secondary ms-2" id="botonresolverpartida" name="botonresolverpartida" value="Resolver" {{ $partida->esFin() ? 'disabled' : '' }}>
                     @if(isset($error) && $error)
                     <div class="invalid-feedback">
                         La letra no es correcta o ya se ha introducido.
@@ -51,8 +50,5 @@ $imgsHangman = ['Hangman-0.png', 'Hangman-1.png', 'Hangman-2.png', 'Hangman-3.pn
     </div>
 </div>
 @endsection
-@push('scripts')
-<script src="assets/js/resolver.js"></script>
-@endpush
 
 
