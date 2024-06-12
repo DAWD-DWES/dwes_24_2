@@ -4,7 +4,7 @@
 @section('title', 'Buscador de partidas')
 @section('navbar')
 <li class="nav-item">
-    <a class="nav-link" aria-current="page" href="buscador.php?volver=true">Volver</a>
+    <a class="nav-link" aria-current="page" href="juego.php?buscadorvolver">Volver</a>
 </li>
 @endsection
 {{-- Sección muestra vista de juego para que el usuario elija una letra --}}

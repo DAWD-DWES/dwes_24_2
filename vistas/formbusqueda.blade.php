@@ -15,16 +15,8 @@ define ("ERROR_FECHABUSQUEDA", 'Fecha inválida');
 define ("ERROR_NUMRANGOLETRAS", 'Rango inválido');
 define ("ERROR_MAXERRORES", 'Número de errores inválido');
 @endphp
-<form action="buscador.php" method="post" novalidate class="container mt-3">
+<form action="juego.php" method="post" novalidate class="container mt-3">
     <h2 class="mb-3">Buscar Partidas</h2>
-    <div class="mb-4">
-        <label for="fechabusqueda" class="form-label">Fecha a partir de la que buscar:</label>
-        <input type="text" class= "{{ "form-control " . (isset($errorFechaBusqueda) ?  ($errorFechaBusqueda ? "is-invalid" : "is-valid") : "") }}" 
-               id="fechabusqueda" name="fechabusqueda" placeholder="Ejemplo: 10/04/2024" value="{{ ($fechaBusqueda ?? '') }}">
-        <div class="invalid-feedback">
-            <p>{{ ERROR_FECHABUSQUEDA }}</p>
-        </div>
-    </div>
     <div class="mb-4">
         <label for="rangoletras" class="form-label">Rango en el número de letras de la palabra secreta:</label>
         <input type="text" class= "{{ "form-control " . (isset($errorRangoNumLetras) ?  ($errorRangoNumLetras ? "is-invalid" : "is-valid") : "") }}" 
