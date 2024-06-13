@@ -17,12 +17,8 @@
         <input type="text" class="form-control" id="rangoletras" name="rangoletras" placeholder="Ejemplo: 5-10">
     </div>
     <div class="mb-4">
-        <label for="numerofallos" class="form-label">Número máximo de fallos:</label>
-        <input type="text" class="form-control" id="numerofallos" name="numerofallos" placeholder="Ejemplo: 3">
-    </div>
-     <div class="mb-4 form-check">
-        <input type="checkbox" class="form-check-input" id="partidasganadas" name="partidasganadas">
-        <label class="form-check-label" for="partidasganadas">Partidas Ganadas</label>
+        <label for="letraspalabrasecreta" class="form-label">Letras en la palabra secreta:</label>
+        <input type="text" class="form-control" id="letraspalabrasecreta" name="letraspalabrasecreta" placeholder="Ejemplo: aertfo">
     </div>
     <div>
         <input type="submit" class="btn btn-primary" name="botonbuscar" value="Buscar Partidas">
