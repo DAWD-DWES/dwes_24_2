@@ -12,7 +12,7 @@
 @section('content')
 @php
 define ("ERROR_NUMRANGOLETRAS", 'Rango inválido');
-define ("ERROR_MAXERRORES", 'Número de errores inválido');
+define ("ERROR_LETRASPALABRASECRETA", 'Secuencia de letras inválida');
 @endphp
 <form action="juego.php" method="post" novalidate class="container mt-3">
     <h2 class="mb-3">Buscar Partidas</h2>
@@ -25,16 +25,12 @@ define ("ERROR_MAXERRORES", 'Número de errores inválido');
         </div>
     </div>
     <div class="mb-4">
-        <label for="maxerrores" class="form-label">Número máximo de errores:</label>
-        <input type="text" class= "{{ "form-control " . (isset($errorMaxErrores) ?  ($errorMaxErrores ? "is-invalid" : "is-valid") : "") }}" 
-               id="maxerrores" name="maxerrores" placeholder="Ejemplo: 3" value="{{ ($maxErrores ?? '') }}">
+        <label for="letraspalabrascreta" class="form-label">Letras en la palabra Secreta:</label>
+        <input type="text" class= "{{ "form-control " . (isset($letrasPalabraSecreta) ?  ($errorLetrasPalabraSecreta ? "is-invalid" : "is-valid") : "") }}" 
+               id="letraspalabrasecreta" name="letraspalabrasecreta" placeholder="Ejemplo: aertfo" value="{{ ($letrasPalabraSecreta ?? '') }}">
         <div class="invalid-feedback">
-            <p>{{ ERROR_MAXERRORES }}</p>
+            <p>{{ ERROR_LETRASPALABRASECRETA }}</p>
         </div>
-    </div>
-    <div class="mb-4 form-check">
-        <input type="checkbox" class="form-check-input" id="partidasganadas" name="partidasganadas">
-        <label class="form-check-label" for="partidasganadas">Partidas Ganadas</label>
     </div>
     <div>
         <input type="submit" class="btn btn-primary" name="botonbuscar" value="Buscar Partidas">

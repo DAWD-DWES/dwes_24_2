@@ -49,6 +49,14 @@ $views = __DIR__ . '/../vistas';
 $cache = __DIR__ . '/../cache';
 $blade = new BladeOne($views, $cache, BladeOne::MODE_DEBUG);
 
+function obtenerPorCriteriosBusqueda(array $partidas, int $minNumLetras, int $maxNumLetras, string $letrasPalabraSecreta): array {
+    return array_filter($partidas, fn($partida) =>
+            strlen($partida->getPalabraSecreta()) >= $minNumLetras &&
+            strlen($partida->getPalabraSecreta()) <= $maxNumLetras &&
+            count(array_filter(str_split(strtolower($letrasPalabraSecreta)), fn($letra) => strpos(strtolower($partida->getPalabraSecreta()), $letra) !== false)) === strlen($letrasPalabraSecreta)
+    );
+}
+
 // Establece conexión a la base de datos PDO
 try {
     $host = $_ENV['DB_HOST'];
@@ -91,22 +99,21 @@ if (isset($_SESSION['usuario'])) {
     } elseif (filter_has_var(INPUT_POST, 'botonbuscar')) {
         $rangoNumLetras = filter_input(INPUT_POST, 'rangonumletras', FILTER_UNSAFE_RAW);
         $errorRangoNumLetras = !preg_match("/^(\d+)-(\d+)$/", $rangoNumLetras, $coincidencias) || $coincidencias[1] > 30 || $coincidencias[2] > 30 || $coincidencias[1] >= $coincidencias[2];
-        $maxErrores = filter_input(INPUT_POST, 'maxerrores', FILTER_UNSAFE_RAW);
-        $errorMaxErrores = !filter_var($maxErrores, FILTER_VALIDATE_INT, ["options" => ["min_range" => 0, "max_range" => 5]]);
-        $partidasGanadasCheck = filter_input(INPUT_POST, 'partidasganadas', FILTER_UNSAFE_RAW);
-        $partidasGanadas = ($partidasGanadasCheck === 'on');
-        $error = $errorRangoNumLetras || $errorMaxErrores;
+        $patronLetras = "/^[a-zA-Z]{0,25}$/";
+        $letrasPalabraSecreta = filter_input(INPUT_POST, 'letraspalabrasecreta', FILTER_UNSAFE_RAW);
+        $errorLetrasPalabraSecreta = !filter_var($letrasPalabraSecreta, FILTER_VALIDATE_REGEXP, array("options" => array("regexp" => $patronLetras)));
+        $error = $errorRangoNumLetras || $errorLetrasPalabraSecreta;
         // Si hay algún error
         if ($error) {
             echo $blade->run("formbusqueda", compact('usuario', 'rangoNumLetras',
-                            'errorRangoNumLetras', 'maxErrores', 'errorMaxErrores', 'partidasGanadas'));
+                            'errorRangoNumLetras', 'letrasPalabraSecreta', 'errorLetrasPalabraSecreta'));
         } else { // Si no hay error proceso la búsqueda
             $minNumLetras = $coincidencias[1];
             $maxNumLetras = $coincidencias[2];
             $partidaDAO = new PartidaDAO($bd);
-            $partidas = $partidaDAO->obtenerPorCriteriosBusqueda($usuario->getId(),
-                    (int) $minNumLetras, (int) $maxNumLetras, (int) $maxErrores, $partidasGanadas);
-            echo $blade->run("partidasencontradas", compact('usuario', 'partidas'));
+            $partidas = $partidaDAO->recuperaPorIdUsuario($usuario->getId());
+            $partidasSeleccionadas = obtenerPorCriteriosBusqueda($partidas, $minNumLetras, $maxNumLetras, $letrasPalabraSecreta);
+            echo $blade->run("partidasencontradas", compact('usuario', 'partidasSeleccionadas'));
         }
     } else { //En cualquier otro caso
         $partida = $_SESSION['partida'];

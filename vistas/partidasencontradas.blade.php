@@ -27,7 +27,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($partidas as $partida)
+                    @forelse($partidasSeleccionadas as $partida)
                     @php
                     $inicioValores = explode(' ', $partida->getInicio());
                     $finValores = explode(' ', $partida->getFin());

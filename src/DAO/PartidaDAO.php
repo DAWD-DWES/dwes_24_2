@@ -4,7 +4,6 @@ namespace App\DAO;
 
 use PDO;
 use App\Modelo\Partida;
-use DateTime;
 
 class PartidaDAO {
 
@@ -34,6 +33,16 @@ class PartidaDAO {
 
     public function elimina(int $id): bool {
         
+    }
+    
+    public function recuperaPorIdUsuario(int $idUsuario): array {
+        $this->bd->setAttribute(PDO::ATTR_CASE, PDO::CASE_NATURAL);
+        $sql = "select * from partidas where idUsuario = :idUsuario";
+        $sth = $this->bd->prepare($sql);
+        $sth->execute(["idUsuario" => $idUsuario]);
+        $sth->setFetchMode(PDO::FETCH_CLASS, Partida::class);
+        $partidas = $sth->fetchAll();
+        return $partidas;
     }
 
     public function obtenerPorCriteriosBusqueda(int $idUsuario, int $minNumLetras, int $maxNumLetras, int $maxErrores, bool $ganadas): array {
