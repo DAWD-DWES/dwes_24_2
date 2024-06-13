@@ -20,7 +20,8 @@
  *     Si hay algún error
  *        Se invoca la vista del formulario mostrando los errores al jugador
  *      Si no  
- *        Se recuperan las partidas que cumplen los criterios de la BBDD
+ *        Se recuperan las partidas del jugador de la BBDD
+ *        Se filtran dichas partidas por los criterios de búsqueda
  *        Invoco la vista de listado de partidas recuperadas
  *    Si no si se pide volver del listado de partidas
  *      Redirecciono al navegador al script de juego
@@ -49,7 +50,7 @@ $views = __DIR__ . '/../vistas';
 $cache = __DIR__ . '/../cache';
 $blade = new BladeOne($views, $cache, BladeOne::MODE_DEBUG);
 
-function obtenerPorCriteriosBusqueda(array $partidas, int $minNumLetras, int $maxNumLetras, string $letrasPalabraSecreta): array {
+function obtenerPartidasPorCriteriosBusqueda(array $partidas, int $minNumLetras, int $maxNumLetras, string $letrasPalabraSecreta): array {
     return array_filter($partidas, fn($partida) =>
             strlen($partida->getPalabraSecreta()) >= $minNumLetras &&
             strlen($partida->getPalabraSecreta()) <= $maxNumLetras &&
@@ -99,7 +100,7 @@ if (isset($_SESSION['usuario'])) {
     } elseif (filter_has_var(INPUT_POST, 'botonbuscar')) {
         $rangoNumLetras = filter_input(INPUT_POST, 'rangonumletras', FILTER_UNSAFE_RAW);
         $errorRangoNumLetras = !preg_match("/^(\d+)-(\d+)$/", $rangoNumLetras, $coincidencias) || $coincidencias[1] > 30 || $coincidencias[2] > 30 || $coincidencias[1] >= $coincidencias[2];
-        $patronLetras = "/^[a-zA-Z]{0,25}$/";
+        $patronLetras = "/^[a-zA-Z]{1,25}$/";
         $letrasPalabraSecreta = filter_input(INPUT_POST, 'letraspalabrasecreta', FILTER_UNSAFE_RAW);
         $errorLetrasPalabraSecreta = !filter_var($letrasPalabraSecreta, FILTER_VALIDATE_REGEXP, array("options" => array("regexp" => $patronLetras)));
         $error = $errorRangoNumLetras || $errorLetrasPalabraSecreta;
@@ -112,7 +113,7 @@ if (isset($_SESSION['usuario'])) {
             $maxNumLetras = $coincidencias[2];
             $partidaDAO = new PartidaDAO($bd);
             $partidas = $partidaDAO->recuperaPorIdUsuario($usuario->getId());
-            $partidasSeleccionadas = obtenerPorCriteriosBusqueda($partidas, $minNumLetras, $maxNumLetras, $letrasPalabraSecreta);
+            $partidasSeleccionadas = obtenerPartidasPorCriteriosBusqueda($partidas, $minNumLetras, $maxNumLetras, $letrasPalabraSecreta);
             echo $blade->run("partidasencontradas", compact('usuario', 'partidasSeleccionadas'));
         }
     } else { //En cualquier otro caso
