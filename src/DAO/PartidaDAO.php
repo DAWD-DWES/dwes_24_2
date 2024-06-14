@@ -34,8 +34,4 @@ class PartidaDAO {
     public function elimina(int $id): bool {
         
     }
-
-    public function obtenerPorCriteriosBusqueda(int $idUsuario, string $fechaBusqueda, int $minNumLetras, int $maxNumLetras, int $maxErrores, bool $ganadas): array {
-        
-    }
 }
