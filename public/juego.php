@@ -99,7 +99,10 @@ if (isset($_SESSION['usuario'])) {
         echo $blade->run("formbusqueda", compact('usuario'));
     } elseif (filter_has_var(INPUT_POST, 'botonbuscar')) {
         $rangoNumLetras = filter_input(INPUT_POST, 'rangonumletras', FILTER_UNSAFE_RAW);
-        $errorRangoNumLetras = !preg_match("/^(\d+)-(\d+)$/", $rangoNumLetras, $coincidencias) || $coincidencias[1] > 30 || $coincidencias[2] > 30 || $coincidencias[1] >= $coincidencias[2];
+        $errorRangoNumLetras = !preg_match("/^(\d+)-(\d+)$/", $rangoNumLetras, $coincidencias) || 
+                $coincidencias[1] > 30 || $coincidencias[1] < 1 || 
+                $coincidencias[2] > 30 || $coincidencias[2] < 1 ||
+                $coincidencias[1] >= $coincidencias[2];
         $patronLetras = "/^[a-zA-Z]{1,25}$/";
         $letrasPalabraSecreta = filter_input(INPUT_POST, 'letraspalabrasecreta', FILTER_UNSAFE_RAW);
         $errorLetrasPalabraSecreta = !filter_var($letrasPalabraSecreta, FILTER_VALIDATE_REGEXP, array("options" => array("regexp" => $patronLetras)));
