@@ -10,7 +10,7 @@
 @endsection
 {{-- Sección muestra el formulario de búsqueda de una partida --}}
 @section('content')
-<form action="buscador.php" method="post" novalidate class="container mt-3">
+<form action="juego.php" method="post" novalidate class="container mt-3">
     <h2 class="mb-3">Buscar Partidas</h2>
     <div class="mb-4">
         <label for="rangoletras" class="form-label">Rango en el número de letras de la palabra secreta:</label>
