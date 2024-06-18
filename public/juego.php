@@ -50,12 +50,32 @@ $views = __DIR__ . '/../vistas';
 $cache = __DIR__ . '/../cache';
 $blade = new BladeOne($views, $cache, BladeOne::MODE_DEBUG);
 
-function obtenerPartidasPorCriteriosBusqueda(array $partidas, int $minNumLetras, int $maxNumLetras, string $letrasPalabraSecreta): array {
+/* function obtenerPartidasPorCriteriosBusqueda(array $partidas, int $minNumLetras, int $maxNumLetras, string $letrasPalabraSecreta): array {
     return array_filter($partidas, fn($partida) =>
             strlen($partida->getPalabraSecreta()) >= $minNumLetras &&
             strlen($partida->getPalabraSecreta()) <= $maxNumLetras &&
             count(array_filter(str_split(strtolower($letrasPalabraSecreta)), fn($letra) => strpos(strtolower($partida->getPalabraSecreta()), $letra) !== false)) === strlen($letrasPalabraSecreta)
     );
+} */
+
+function obtenerPartidasPorCriteriosBusqueda(array $partidas, int $minNumLetras, int $maxNumLetras, string $letrasPalabraSecreta): array {
+    $partidasEncontradas = [];
+    foreach ($partidas as $partida) {
+        if (strlen($partida->getPalabraSecreta()) >= $minNumLetras &&
+                strlen($partida->getPalabraSecreta()) <= $maxNumLetras) {
+            $compruebaLetras = true;
+            foreach (str_split(strtolower($letrasPalabraSecreta)) as $letra) {
+                if (strpos(strtolower($partida->getPalabraSecreta()), $letra) === false) {
+                    $compruebaLetras = false;
+                    break;
+                }
+            }
+            if ($compruebaLetras) {
+                $partidasEncontradas[] = $partida;
+            }
+        }
+    }
+    return $partidasEncontradas;
 }
 
 // Establece conexión a la base de datos PDO
@@ -99,8 +119,8 @@ if (isset($_SESSION['usuario'])) {
         echo $blade->run("formbusqueda", compact('usuario'));
     } elseif (filter_has_var(INPUT_POST, 'botonbuscar')) {
         $rangoNumLetras = filter_input(INPUT_POST, 'rangonumletras', FILTER_UNSAFE_RAW);
-        $errorRangoNumLetras = !preg_match("/^(\d+)-(\d+)$/", $rangoNumLetras, $coincidencias) || 
-                $coincidencias[1] > 30 || $coincidencias[1] < 1 || 
+        $errorRangoNumLetras = !preg_match("/^(\d+)-(\d+)$/", $rangoNumLetras, $coincidencias) ||
+                $coincidencias[1] > 30 || $coincidencias[1] < 1 ||
                 $coincidencias[2] > 30 || $coincidencias[2] < 1 ||
                 $coincidencias[1] >= $coincidencias[2];
         $patronLetras = "/^[a-zA-Z]{1,25}$/";
