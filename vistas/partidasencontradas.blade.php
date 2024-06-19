@@ -28,17 +28,14 @@
                 </thead>
                 <tbody>
                     @forelse($partidasSeleccionadas as $partida)
-                    @php
-                    $inicioValores = explode(' ', $partida->getInicio());
-                    $finValores = explode(' ', $partida->getFin());
-                    @endphp                    <tr>
+                    <tr>
                         <td>{{ $partida->getPalabraSecreta() }}</td>
                         <td>{{ $partida->getLetras() }}</td>
                         <td>{{ $partida->getNumErrores() }}</td>
-                        <td>{{ $inicioValores[0] }}</td>
-                        <td>{{ $inicioValores[1] }}</td>
-                        <td>{{ $finValores[0] }}</td>
-                        <td>{{ $finValores[1] }}</td>
+                        <td>{{ explode(' ', $partida->getInicio())[0] }}</td>
+                        <td>{{ explode(' ', $partida->getInicio())[1] }}</td>
+                        <td>{{ ($partida->getFin()) ? explode(' ', $partida->getFin())[0] : '-' }}</td>
+                        <td>{{ ($partida->getFin()) ? explode(' ', $partida->getFin())[1] : '-' }}</td>
                         <td>{{ ($partida->getPalabraDescubierta() ===  $partida->getPalabraSecreta()) ? "Si" : "No"}}</td>
                     </tr>
                     @empty

@@ -129,7 +129,7 @@ if (isset($_SESSION['usuario'])) {
                 $coincidencias[1] >= $coincidencias[2];
         $patronLetras = "/^[a-zA-Z]{1,25}$/";
         $letrasPalabraSecreta = filter_input(INPUT_POST, 'letraspalabrasecreta', FILTER_UNSAFE_RAW);
-        $errorLetrasPalabraSecreta = !filter_var($letrasPalabraSecreta, FILTER_VALIDATE_REGEXP, array("options" => array("regexp" => $patronLetras)));
+        $errorLetrasPalabraSecreta = !filter_var(trim($letrasPalabraSecreta), FILTER_VALIDATE_REGEXP, array("options" => array("regexp" => $patronLetras)));
         $error = $errorRangoNumLetras || $errorLetrasPalabraSecreta;
         // Si hay algún error
         if ($error) {
