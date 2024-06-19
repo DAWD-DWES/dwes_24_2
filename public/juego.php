@@ -50,6 +50,8 @@ $views = __DIR__ . '/../vistas';
 $cache = __DIR__ . '/../cache';
 $blade = new BladeOne($views, $cache, BladeOne::MODE_DEBUG);
 
+// Solución funcional
+
 /* function obtenerPartidasPorCriteriosBusqueda(array $partidas, int $minNumLetras, int $maxNumLetras, string $letrasPalabraSecreta): array {
     return array_filter($partidas, fn($partida) =>
             strlen($partida->getPalabraSecreta()) >= $minNumLetras &&
@@ -57,6 +59,8 @@ $blade = new BladeOne($views, $cache, BladeOne::MODE_DEBUG);
             count(array_filter(str_split(strtolower($letrasPalabraSecreta)), fn($letra) => strpos(strtolower($partida->getPalabraSecreta()), $letra) !== false)) === strlen($letrasPalabraSecreta)
     );
 } */
+
+// Solución imperativa
 
 function obtenerPartidasPorCriteriosBusqueda(array $partidas, int $minNumLetras, int $maxNumLetras, string $letrasPalabraSecreta): array {
     $partidasEncontradas = [];
@@ -119,7 +123,7 @@ if (isset($_SESSION['usuario'])) {
         echo $blade->run("formbusqueda", compact('usuario'));
     } elseif (filter_has_var(INPUT_POST, 'botonbuscar')) {
         $rangoNumLetras = filter_input(INPUT_POST, 'rangonumletras', FILTER_UNSAFE_RAW);
-        $errorRangoNumLetras = !preg_match("/^(\d+)-(\d+)$/", $rangoNumLetras, $coincidencias) ||
+        $errorRangoNumLetras = !preg_match("/^([1-9]\d*)-([1-9]\d*)$/", $rangoNumLetras, $coincidencias) ||
                 $coincidencias[1] > 30 || $coincidencias[1] < 1 ||
                 $coincidencias[2] > 30 || $coincidencias[2] < 1 ||
                 $coincidencias[1] >= $coincidencias[2];
