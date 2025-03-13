@@ -88,12 +88,10 @@ if (isset($_SESSION['usuario'])) {
         else {
             // Invoco la vista del formulario de login con el flag de error activado
             echo $blade->run("formlogin", ['error' => true]);
-            die;
         }
         // En cualquier otro caso
     } else {
         // Invoco la vista del formulario de login
         echo $blade->run("formlogin");
-        die;
     }
 }
