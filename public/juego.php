@@ -52,23 +52,26 @@ $blade = new BladeOne($views, $cache, BladeOne::MODE_DEBUG);
 
 // Solución funcional
 
-/* function obtenerPartidasPorCriteriosBusqueda(array $partidas, int $minNumLetras, int $maxNumLetras, string $letrasPalabraSecreta): array {
-    return array_filter($partidas, fn($partida) =>
-            strlen($partida->getPalabraSecreta()) >= $minNumLetras &&
-            strlen($partida->getPalabraSecreta()) <= $maxNumLetras &&
-            count(array_filter(str_split(strtolower($letrasPalabraSecreta)), fn($letra) => strpos(strtolower($partida->getPalabraSecreta()), $letra) !== false)) === strlen($letrasPalabraSecreta)
-    );
-} */
+ /* function obtenerPartidasPorCriteriosBusqueda(array $partidas, int $minNumLetras, int $maxNumLetras, string $letrasPalabraSecreta): array {
+  $letrasUnicas = array_unique(str_split(strtolower($letrasPalabraSecreta)));
+     return array_filter($partidas, fn($partida) =>
+  strlen($partida->getPalabraSecreta()) >= $minNumLetras &&
+  strlen($partida->getPalabraSecreta()) <= $maxNumLetras &&
+  count(array_filter($letrasUnicas, fn($letra) => strpos(strtolower($partida->getPalabraSecreta()), $letra) !== false)) === count($letrasUnicas)
+  );
+  } */
 
 // Solución imperativa
 
-function obtenerPartidasPorCriteriosBusqueda(array $partidas, int $minNumLetras, int $maxNumLetras, string $letrasPalabraSecreta): array {
+ function obtenerPartidasPorCriteriosBusqueda(array $partidas, int $minNumLetras, int $maxNumLetras, string $letrasPalabraSecreta): array {
     $partidasEncontradas = [];
     foreach ($partidas as $partida) {
-        if (strlen($partida->getPalabraSecreta()) >= $minNumLetras &&
-                strlen($partida->getPalabraSecreta()) <= $maxNumLetras) {
+        if (strlen($partida->getPalabraSecreta()) < $minNumLetras &&
+                strlen($partida->getPalabraSecreta()) > $maxNumLetras) {
+            continue;
+        } else {
             $compruebaLetras = true;
-            foreach (str_split(strtolower($letrasPalabraSecreta)) as $letra) {
+            foreach (array_unique(str_split(strtolower($letrasPalabraSecreta))) as $letra) {
                 if (strpos(strtolower($partida->getPalabraSecreta()), $letra) === false) {
                     $compruebaLetras = false;
                     break;
@@ -105,11 +108,11 @@ if (isset($_SESSION['usuario'])) {
         $partida = $_SESSION['partida'];
 // Compruebo si la letra no es válida (carácter no válido o ya introducida)
         $error = !$partida->esLetraValida($letra);
-        // Si no hay error compruebo la letra
+// Si no hay error compruebo la letra
         if (!$error) {
             $partida->compruebaLetra(strtoupper($letra));
         }
-        // Sigo jugando
+// Sigo jugando
         echo $blade->run("juego", compact('usuario', 'partida', 'error'));
 // Si no si se solicita una nueva partida
     } elseif (filter_has_var(INPUT_GET, 'botonnuevapartida')) { // Se arranca una nueva partida
@@ -124,14 +127,14 @@ if (isset($_SESSION['usuario'])) {
     } elseif (filter_has_var(INPUT_POST, 'botonbuscar')) {
         $rangoNumLetras = filter_input(INPUT_POST, 'rangonumletras', FILTER_UNSAFE_RAW);
         $errorRangoNumLetras = !preg_match("/^([1-9]\d*)-([1-9]\d*)$/", $rangoNumLetras, $coincidencias) ||
-                $coincidencias[1] > 30 || $coincidencias[1] < 1 ||
-                $coincidencias[2] > 30 || $coincidencias[2] < 1 ||
-                $coincidencias[1] >= $coincidencias[2];
+                $coincidencias[1] < 1 ||
+                $coincidencias[2] > 30 ||
+                $coincidencias[1] > $coincidencias[2];
         $patronLetras = "/^[a-zA-Z]{1,25}$/";
         $letrasPalabraSecreta = filter_input(INPUT_POST, 'letraspalabrasecreta', FILTER_UNSAFE_RAW);
         $errorLetrasPalabraSecreta = !filter_var(trim($letrasPalabraSecreta), FILTER_VALIDATE_REGEXP, array("options" => array("regexp" => $patronLetras)));
         $error = $errorRangoNumLetras || $errorLetrasPalabraSecreta;
-        // Si hay algún error
+// Si hay algún error
         if ($error) {
             echo $blade->run("formbusqueda", compact('usuario', 'rangoNumLetras',
                             'errorRangoNumLetras', 'letrasPalabraSecreta', 'errorLetrasPalabraSecreta'));
@@ -139,9 +142,14 @@ if (isset($_SESSION['usuario'])) {
             $minNumLetras = $coincidencias[1];
             $maxNumLetras = $coincidencias[2];
             $partidaDAO = new PartidaDAO($bd);
-            $partidas = $partidaDAO->recuperaPorIdUsuario($usuario->getId());
-            $partidasSeleccionadas = obtenerPartidasPorCriteriosBusqueda($partidas, $minNumLetras, $maxNumLetras, $letrasPalabraSecreta);
-            echo $blade->run("partidasencontradas", compact('usuario', 'partidasSeleccionadas'));
+            try {
+                $partidas = $partidaDAO->recuperaPorIdUsuario($usuario->getId());
+                $partidasSeleccionadas = obtenerPartidasPorCriteriosBusqueda($partidas, $minNumLetras, $maxNumLetras, $letrasPalabraSecreta);
+                echo $blade->run("partidasencontradas", compact('usuario', 'partidasSeleccionadas'));
+            } catch (Exception $ex) {
+                error_log($ex->getMessage());
+                echo $blade->run("formbusqueda");
+            }
         }
     } else { //En cualquier otro caso
         $partida = $_SESSION['partida'];
