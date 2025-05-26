@@ -52,18 +52,19 @@ $blade = new BladeOne($views, $cache, BladeOne::MODE_DEBUG);
 
 // Solución funcional
 
- /* function obtenerPartidasPorCriteriosBusqueda(array $partidas, int $minNumLetras, int $maxNumLetras, string $letrasPalabraSecreta): array {
-  $letrasUnicas = array_unique(str_split(strtolower($letrasPalabraSecreta)));
-     return array_filter($partidas, fn($partida) =>
-  strlen($partida->getPalabraSecreta()) >= $minNumLetras &&
-  strlen($partida->getPalabraSecreta()) <= $maxNumLetras &&
-  count(array_filter($letrasUnicas, fn($letra) => strpos(strtolower($partida->getPalabraSecreta()), $letra) !== false)) === count($letrasUnicas)
-  );
-  } */
+/* function obtenerPartidasPorCriteriosBusqueda(array $partidas, int $minNumLetras, int $maxNumLetras, string $letrasPalabraSecreta): array {
+    $letrasUnicas = array_unique(str_split(strtolower($letrasPalabraSecreta)));
+    $partidasSeleccionadas = array_filter($partidas, fn($partida) =>
+            strlen($partida->getPalabraSecreta()) >= $minNumLetras &&
+            strlen($partida->getPalabraSecreta()) <= $maxNumLetras &&
+            count(array_filter($letrasUnicas, fn($letra) => strpos(strtolower($partida->getPalabraSecreta()), $letra) !== false)) === count($letrasUnicas));
+    return $partidasSeleccionadas;
+}
+ */
 
 // Solución imperativa
 
- function obtenerPartidasPorCriteriosBusqueda(array $partidas, int $minNumLetras, int $maxNumLetras, string $letrasPalabraSecreta): array {
+function obtenerPartidasPorCriteriosBusqueda(array $partidas, int $minNumLetras, int $maxNumLetras, string $letrasPalabraSecreta): array {
     $partidasEncontradas = [];
     foreach ($partidas as $partida) {
         if (strlen($partida->getPalabraSecreta()) < $minNumLetras &&
