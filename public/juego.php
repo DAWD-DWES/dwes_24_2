@@ -59,8 +59,7 @@ $blade = new BladeOne($views, $cache, BladeOne::MODE_DEBUG);
             strlen($partida->getPalabraSecreta()) <= $maxNumLetras &&
             count(array_filter($letrasUnicas, fn($letra) => strpos(strtolower($partida->getPalabraSecreta()), $letra) !== false)) === count($letrasUnicas));
     return $partidasSeleccionadas;
-}
- */
+} */
 
 // Solución imperativa
 
